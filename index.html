@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>news loading</title>
+	<style type="text/css">
+		li{
+			list-style: none;
+		}
+		ul,li{
+			margin: 0;
+			padding: 0;
+		}
+		.list li{
+			border: 1px solid grey;
+			padding: 5px;
+			margin: 10px;
+		}
+		.list li:hover{
+			color: #fff;
+			background: #57E4A1;
+		}
+		.add-more{
+			padding: 10px;
+			color: red;
+			border: 1px solid red;
+			border-radius: 3px;
+			background: #fff;
+			display: block;
+			margin: 20px auto;
+			cursor: pointer;
+		}
+	</style>
+
+</head>
+<body>
+	<ul class="list">
+		<li>内容1</li>
+		<li>内容2</li>
+	</ul>
+	<button class="add-more">加载更多</button>
+	<script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+	<script type="text/javascript">
+		var pageIndex = 2;
+		var $addMore = $('.add-more');
+		$addMore.on('click',function(){
+			$.ajax({
+				url: '/getNews',
+				type: 'get',
+				data:{
+					index: pageIndex
+				},
+				success: function(ret){appendHtml(ret);},//注意每项之后的逗号
+				error: function(){
+					console.log('error');
+				}
+			})
+		})
+
+		function appendHtml(ret){
+			var html = '';
+			pageIndex += 6;
+			$.each(ret,function(){
+				html += '<li>'+this+'</li>'//注意this不能用$(this)
+			})
+			$('.list').append(html);
+		}
+	</script>
+</body>
+</html>
